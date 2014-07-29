@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title data-l10n-id="app_title">Permissions App</title>
+        <meta name="description" content="Permissions App">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="css/app.css">
+        <script type="text/javascript" src="js/app.js" defer></script>
+
+        <!--
+        The following two lines are for loading the localisations library
+        and the localisation data-so people can use the app in their
+        own language (as long as you provide translations).
+        -->
+        <link rel="prefetch" type="application/l10n" href="data/locales.ini" />
+        <script type="text/javascript" src="js/libs/l10n.js" defer></script>
+    </head>
+    <body>
+        <section>
+            <h1 data-l10n-id="app_title">Permissions App</h1>
+            <button id="btnreload">reload</button>
+        </section>
+        <section>
+            <ul id="applist">
+            </ul>
+        </section>
+    </body>
+</html>
