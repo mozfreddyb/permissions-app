@@ -32,11 +32,11 @@ window.addEventListener('DOMContentLoaded', function() {
 
     apps_request.onsuccess = function (evt) {
       var appsArr = evt.target.result;
-      //var permission = navigator.mozPermissionSettings;
+      var permission = navigator.mozPermissionSettings;
 
       // Let's check the permission of each app
       appsArr.forEach(function (app) {
-        var request, appName = app.manifest.name;
+        var permName, appName = app.manifest.name;
 
         var app_entry = document.createElement("li");
         var app_title = document.createElement("h5");
@@ -55,14 +55,14 @@ window.addEventListener('DOMContentLoaded', function() {
         console.group();
         console.log("permissions for ", appName);
         console.log(app);
-        for (request in app.manifest.permissions) {
+        for (permName in app.manifest.permissions) {
           // Let's get the current permission for each permission request by the application
 
-          var p = permission.get(request, app.manifestUrl, app.origin, false);
-          console.log(request, app.manifestURL, app.origin);
-          console.log(request, ">", p)
+          var p = permission.get(permName, app.manifestUrl, app.origin, false);
+          console.log(permName, app.manifestURL, app.origin);
+          console.log(permName, ">", p)
           var perm_entry = document.createElement("li");
-          perm_entry.textContent = request + ': ' + p;
+          perm_entry.textContent = permName + ': ' + p;
           app_permissions.appendChild(perm_entry);
         }
         console.groupEnd();
