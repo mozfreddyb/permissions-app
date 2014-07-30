@@ -43,7 +43,6 @@ window.addEventListener('DOMContentLoaded', function() {
         app_title.addEventListener("click", function(e) {
           var el = e.target;
           var permlist = el.nextSibling;
-          console.log("(un)hiding ", permlist);
           permlist.classList.toggle("hidden");
         });
         var app_permissions = document.createElement("ul");
@@ -52,20 +51,13 @@ window.addEventListener('DOMContentLoaded', function() {
         app_entry.appendChild(app_permissions);
 
         app_title.textContent = appName;
-        console.group();
-        console.log("permissions for ", appName);
-        console.log(app);
         for (permName in app.manifest.permissions) {
           // Let's get the current permission for each permission request by the application
-
-          var p = permission.get(permName, app.manifestUrl, app.origin, false);
-          console.log(permName, app.manifestURL, app.origin);
-          console.log(permName, ">", p)
+          var p = permission.get(permName, app.manifestURL, app.origin, false);
           var perm_entry = document.createElement("li");
           perm_entry.textContent = permName + ': ' + p;
           app_permissions.appendChild(perm_entry);
         }
-        console.groupEnd();
         applist.appendChild(app_entry);
       });
 
