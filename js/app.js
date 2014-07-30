@@ -26,15 +26,16 @@ window.addEventListener('DOMContentLoaded', function() {
   var listPermissions = (function listPermissions() {
     // via https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API
     // Let's check all installed apps
-    var apps = navigator.mozApps.mgmt.getAll();
+    var apps_request = navigator.mozApps.mgmt.getAll();
     var applist = document.getElementById("applist");
 
 
-    apps.onsuccess = function () {
-      var permission = navigator.mozPermissionSettings;
+    apps_request.onsuccess = function (evt) {
+      var appsArr = evt.target.result;
+      //var permission = navigator.mozPermissionSettings;
 
       // Let's check the permission of each app
-      apps.result.forEach(function (app) {
+      appsArr.forEach(function (app) {
         var request, appName = app.manifest.name;
 
         var app_entry = document.createElement("li");
