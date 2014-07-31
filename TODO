@@ -1,0 +1,12 @@
+Functionality
+* allow to change by permission as well as by app:
+** e.g. I want to change all geolocation to ALLOW/DENY/ASK. regardless of the app.
+
+
+Code
+* improve data and state management. it's all very ugly and in the DOM by now..
+
+UI
+* different icon. maybe switchboard/equalizer/mixer kind of thing.
+
+
