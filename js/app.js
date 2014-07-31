@@ -61,10 +61,12 @@ window.addEventListener('DOMContentLoaded', function() {
   var setPermission = function (appName, permName, value) {
     var apps_request = navigator.mozApps.mgmt.getAll();
     var permission = navigator.mozPermissionSettings;
+    console.log("Setting permission...", permName, appName, value);
     apps_request.onsuccess = function (evt) {
       var appsArr = evt.target.result;
       appsArr.forEach(function (app) {
-        if (app.manifest.name == appName) {
+        if (app.manifest.name === appName) {
+          console.log("found the app!", app.manifest.name, "==", appName, app);
           if (!permission.isExplicit(permName, app.manifestURL, app.origin, false)) {
             // Let's ask the user for all permissions requested by the application
             try {
@@ -73,10 +75,15 @@ window.addEventListener('DOMContentLoaded', function() {
               return true;
             }
             catch(e) {
-              console.log("Uh, could not set the permission?!", permName, appName, value, app.manifestURL)
+              console.log("Uh, could not set the permission.");
               console.log(e);
               return false;
             };
+          }
+          else {
+            console.log("This is an implicit permission. We can't change it!");
+            console.log(permName, app.manifestURL, app.origin);
+            return false;
           }
         }
       });
