@@ -58,6 +58,30 @@ window.addEventListener('DOMContentLoaded', function() {
       return '../style/images/default.png';
     }
   } ///////////////////
+  var setPermission = function (appName, permName, value) {
+    var apps_request = navigator.mozApps.mgmt.getAll();
+    var permission = navigator.mozPermissionSettings;
+    apps_request.onsuccess = function (evt) {
+      var appsArr = evt.target.result;
+      appsArr.forEach(function (app) {
+        if (app.manifest.name == appName) {
+          if (!permission.isExplicit(permName, app.manifestURL, app.origin, false)) {
+            // Let's ask the user for all permissions requested by the application
+            try {
+              //XXX still throws sometimes :-(
+              permission.set(permName, value, app.manifestURL, app.origin, false);
+              return true;
+            }
+            catch(e) {
+              console.log("Uh, could not set the permission?!", permName, appName, value, app.manifestURL)
+              console.log(e);
+              return false;
+            };
+          }
+        }
+      });
+    }
+  };
 
   var listPermissions = (function listPermissions() {
     // via https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API
@@ -90,7 +114,7 @@ window.addEventListener('DOMContentLoaded', function() {
           console.log(this);
           var app_view = document.getElementById("app-view-name");
           app_view.textContent = this.manifest.name;
-          var permlist = document.getElementById("permlist");
+          var perm_list = document.getElementById("permlist");
 
           for (permName in this.manifest.permissions) {
             // Let's get the current permission for each permission request by the application
@@ -110,13 +134,33 @@ window.addEventListener('DOMContentLoaded', function() {
               perm_link.addEventListener("click", function () {
                 // invoke select
                 var select = document.getElementById("change-perms");
+                select.dataset.permName = permName;
+                select.dataset.appName = appName;
                 var current = select.querySelector('[value="' + this.parentNode.dataset.p + '"]');
                 current.setAttribute("selected", true);
                 select.focus();
                 select.onchange = function() {
-                  //uh oh..
-                  console.log("yo, do the change, pls. k thx")
+
+                  console.log(this.dataset, this.value);
+                  if (setPermission(this.dataset.appName, this.dataset.permName, this.value) === true) {
+                    // change image
+                    var entries = perm_list.querySelectorAll("p");
+                    for (var item in entries) {
+                      if (item.textContent == this.dataset.permName) {
+                        console.log(item);
+                        item.previousSibling.querySelector("img").src = "/img/" + this.dataset.permName + ".png";
+                        return;
+                      }
+                    }
+                  } else {
+                    alert("Could not change the permission :(")
+                  }
                 }
+              })
+            }
+            else {
+              perm_link.addEventListener("click", function() {
+                alert("This permission is currently set to 'unknown'. For safety reasons, we prevent you from changing it :(");
               })
             }
             /*var attributeSafeName = app.manifest.name.replace(/\W+/g, '_');
@@ -145,7 +189,7 @@ window.addEventListener('DOMContentLoaded', function() {
             var perm_value = document.createElement("p");
             perm_value.textContent = permName;
             perm_link.appendChild(perm_value);
-            permlist.appendChild(perm_entry);
+            perm_list.appendChild(perm_entry);
            }
 
           scrolled = window.scrollY;
