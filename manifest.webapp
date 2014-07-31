@@ -4,10 +4,10 @@
   "description": "Putting you in control of your device",
   "launch_path": "/index.html",
   "icons": {
-    "16": "/img/icons/icon16x16.png",
-    "48": "/img/icons/icon48x48.png",
-    "60": "/img/icons/icon60x60.png",
-    "128": "/img/icons/icon128x128.png"
+    "32": "/img/icons/icon32.png",
+    "90": "/img/icons/icon90.png",
+    "120": "/img/icons/icon120.png",
+    "128": "/img/icons/icon128.png"
   },
   "developer": {
     "name": "Frederik Braun",

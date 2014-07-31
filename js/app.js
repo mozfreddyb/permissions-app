@@ -64,29 +64,26 @@ window.addEventListener('DOMContentLoaded', function() {
     console.log("Setting permission...", permName, appName, value);
     apps_request.onsuccess = function (evt) {
       var appsArr = evt.target.result;
-      appsArr.forEach(function (app) {
+      for (var app of appsArr) {
         if (app.manifest.name === appName) {
-          console.log("found the app!", app.manifest.name, "==", appName, app);
-          if (!permission.isExplicit(permName, app.manifestURL, app.origin, false)) {
+          console.log("Found the app!", app.manifest.name, "==", appName, app);
+          if (permission.isExplicit(permName, app.manifestURL, app.origin, false)) {
             // Let's ask the user for all permissions requested by the application
             try {
               //XXX still throws sometimes :-(
+              // we can't return because onsuccess event...
               permission.set(permName, value, app.manifestURL, app.origin, false);
-              return true;
             }
             catch(e) {
-              console.log("Uh, could not set the permission.");
-              console.log(e);
-              return false;
+              console.warn("Uh, could not set the permission...", e);
             };
           }
           else {
-            console.log("This is an implicit permission. We can't change it!");
-            console.log(permName, app.manifestURL, app.origin);
-            return false;
+            console.warn("This is an implicit permission. We can't change it!");
+            console.warn(permName, app.manifestURL, app.origin);
           }
         }
-      });
+      }
     }
   };
 
@@ -118,11 +115,9 @@ window.addEventListener('DOMContentLoaded', function() {
         app_title.textContent = appName;
 
         app_link.addEventListener("click", (function() {
-          console.log(this);
           var app_view = document.getElementById("app-view-name");
           app_view.textContent = this.manifest.name;
           var perm_list = document.getElementById("permlist");
-
           for (permName in this.manifest.permissions) {
             // Let's get the current permission for each permission request by the application
             var p = permission.get(permName, this.manifestURL, this.origin, false);
@@ -133,7 +128,6 @@ window.addEventListener('DOMContentLoaded', function() {
             if (["allow", "prompt", "deny", "unknown"].indexOf(p) != -1) {
               perm_icon.src = "/img/" + p + ".png"
             }
-            console.log(p);
             perm_icon_container.appendChild(perm_icon)
             perm_link.appendChild(perm_icon_container);
             perm_entry.dataset.p = p;
@@ -147,20 +141,14 @@ window.addEventListener('DOMContentLoaded', function() {
                 current.setAttribute("selected", true);
                 select.focus();
                 select.onchange = function() {
-
-                  console.log(this.dataset, this.value);
-                  if (setPermission(this.dataset.appName, this.dataset.permName, this.value) === true) {
-                    // change image
-                    var entries = perm_list.querySelectorAll("p");
-                    for (var item in entries) {
-                      if (item.textContent == this.dataset.permName) {
-                        console.log(item);
-                        item.previousSibling.querySelector("img").src = "/img/" + this.dataset.permName + ".png";
-                        return;
-                      }
+                  setPermission(this.dataset.appName, this.dataset.permName, this.value);
+                  // change image
+                  var entries = perm_list.querySelectorAll("p");
+                  for (var item of entries) {
+                    if (item.textContent == this.dataset.permName) {
+                      item.previousSibling.querySelector("img").src = "/img/" + this.value + ".png";
+                      break;
                     }
-                  } else {
-                    alert("Could not change the permission :(")
                   }
                 }
               })
