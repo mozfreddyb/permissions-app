@@ -1,20 +1,52 @@
-html, body {
-  margin: 0;
-  padding: 0.5rem;
+html {
+    font-size: 10px;
 }
-
 body {
+  margin: 0px;
   font-size: 1rem;
   background: #fff;
+  height: 100%;
+  display: block;
 }
 
-h1 {
-  margin: 0 0 1rem 0;
-}
-
-p {
-  font-size: inherit;
-}
 .hidden {
     display:none;
+}
+
+section[role="region"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff;
+}
+
+#app-view {
+    z-index: 10;
+
+}
+.move-out {
+    transform: translateX(100%);
+    transition: all 0.2s;
+}
+
+.move-in {
+    transform: translateX(0);
+    transition: all 0.2s;
+}
+
+[data-type="list"] li > a aside img {
+    height: 4rem;
+    width: 4rem;
+    margin: 1rem 1rem 0 0;
+}
+ul#permlist > li > button {
+    /* un-styleing the buttons in the permission change view */
+    -moz-appearance: none;
+    background: none;
+    border: 0;
+    width:100%;
+    text-align:left;
+
 }

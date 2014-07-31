@@ -5,6 +5,13 @@
         <title data-l10n-id="app_title">Permissions App</title>
         <meta name="description" content="Permissions App">
         <meta name="viewport" content="width=device-width">
+
+        <!-- shared styles -->
+        <link rel="stylesheet" href="css/headers.css">
+        <link rel="stylesheet" href="css/lists.css">
+        <link rel="stylesheet" href="css/icons.css">
+
+
         <link rel="stylesheet" href="css/app.css">
         <script type="text/javascript" src="js/app.js" defer></script>
 
@@ -17,13 +24,33 @@
         <script type="text/javascript" src="js/libs/l10n.js" defer></script>
     </head>
     <body>
-        <section>
+    <section role="region" id="list-view">
+        <header>
+            <!--
+            Idea: Provide a settings view that allows to revoke a selected permission for all apps.
+            <menu type="toolbar">
+                <button id="settings-btn"><span class="icon icon-settings">settings</span></button>
+            </menu>-->
             <h1 data-l10n-id="app_title">Permissions App</h1>
-            <button id="btnreload">reload</button>
-        </section>
-        <section>
+        </header>
+        <article data-type="list">
             <ul id="applist">
             </ul>
-        </section>
+        </article>
+    </section>
+
+
+
+    <!-- View App Settings -->
+    <section role="region" id="app-view" class="skin-organic move-out">
+        <header>
+            <button id="close-app"><span class="icon icon-back">close</span></button>
+            <h1 id="app-view-name"></h1>
+        </header>
+          <article data-type="list">
+            <ul id="permlist">
+            </ul>
+           </article>
+    </section>
     </body>
 </html>
