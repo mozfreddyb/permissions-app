@@ -217,6 +217,7 @@ window.addEventListener('DOMContentLoaded', function() {
 var scrolled;
 var appViewClose = document.getElementById("close-app");
 appViewClose.addEventListener("click", function () {
+  document.getElementById("permlist").innerHTML = "";
   document.getElementById("app-view").classList.remove("move-in");
   document.getElementById("app-view").classList.add("move-out");
   document.getElementById("list-view").style.display = "block";
